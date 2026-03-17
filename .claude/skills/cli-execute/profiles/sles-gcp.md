@@ -34,8 +34,10 @@ zypper migration --query    # --query フラグ必須（クエリのみ）
 SUSEConnect --status
 
 # SLES 実行コマンド（Runbook承認・人間の最終確認後のみ）
-sudo zypper migration       # SPマイグレーション実行
+sudo zypper patch           # SP パッチ適用（SP7移行前のSP6最新化）
+sudo zypper migration       # SPマイグレーション実行（推奨: ターミナルから手動実行。--auto-agree-with-licenses が必要になる場合あり）
 sudo SUSEConnect --status   # 登録状態確認（sudo付き）
+sudo SUSEConnect -p         # モジュール登録（未登録モジュールの解消）
 sudo reboot                 # マイグレーション後の再起動
 
 # GCP 操作
