@@ -147,6 +147,9 @@ output/runbooks/YYYYMMDD_<goal>.md を生成する。
 人間がRunbookを承認したら
 output/scripts/YYYYMMDD_<goal>.sh を生成する。
 
+**このスクリプトは調査フェーズ（cli-validate）で実行した読み取り専用コマンドを再現するもの。**
+**実行手順（Runbook の `## 手順` セクション）のスクリプトは cli-execute が生成する。**
+
 ---
 
 ## Runbook テンプレート

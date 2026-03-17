@@ -214,6 +214,56 @@ gcloud compute snapshots describe <snapshot_name> --project=<project_id> \
 
 ---
 
+### Step 7: スクリプト生成（Executor）
+
+実行レポート生成後、自動で `output/scripts/YYYYMMDD_<goal>_exec.sh` を生成する。
+
+**スクリプトの内容:**
+- Runbook の `## 手順` セクションから抽出した全コマンドを順番に記載
+- バックアップステップ（スナップショット取得等）も含む
+- **手動実行が必要なコマンド**（対話的コマンド等）は実行せず、`echo` でユーザーへの指示メッセージを出力して終了するブロックとして記載
+- 各ステップにエラー時の `exit 1` を含む
+
+**手動実行判定の基準:**
+- プロファイルの許可コマンドコメントに「手動実行推奨」「対話的」等の注記があるもの
+- 実行時に `FAILED` になった後に手動対応が必要と判断したもの
+
+**スクリプトテンプレート:**
+
+```bash
+#!/bin/bash
+# 実行スクリプト: <Goal>
+# 生成日: YYYY-MM-DD
+# 元Runbook: <runbookパス>
+# 元実行レポート: <exec_result パス>
+#
+# 使い方: bash <このスクリプト名>.sh
+# 注意: 手動実行が必要なステップは echo で案内します。
+
+set -euo pipefail
+
+# [1] <ステップ名>
+echo "[1] <ステップ名> を実行します..."
+<コマンド> || { echo "ERROR: [1] <ステップ名> が失敗しました。処理を中止します。"; exit 1; }
+
+# [N] <手動実行が必要なステップ>（例: zypper migration）
+echo ""
+echo "=========================================="
+echo "[N] <ステップ名> は手動実行が必要です。"
+echo "以下のコマンドを手動で実行してください:"
+echo ""
+echo "  <コマンド>"
+echo ""
+echo "完了後、このスクリプトの次のステップを続けてください。"
+echo "=========================================="
+echo ""
+read -r -p "手動実行が完了したら Enter を押してください..."
+
+echo "完了: 全ステップが終了しました。"
+```
+
+---
+
 ## 実行レポート テンプレート
 
 ```markdown
@@ -269,3 +319,4 @@ gcloud compute snapshots describe <snapshot_name> --project=<project_id> \
 |------|------|
 | 実行ログ | `logs/YYYYMMDD_<goal>_exec.log` |
 | 実行レポート | `output/runbooks/YYYYMMDD_<goal>_exec_result.md` |
+| 実行スクリプト | `output/scripts/YYYYMMDD_<goal>_exec.sh` |
