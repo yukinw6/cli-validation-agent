@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Write",
+      "Edit",
+      "Bash(find:*)",
+      "Bash(mkdir:*)",
+      "Bash(ls:*)",
+      "Bash(echo:*)",
+      "Bash(cat:*)",
+      "Bash(tee:*)",
+      "Bash(uname:*)",
+      "Bash(hostname:*)",
+      "Bash(df:*)",
+      "Bash(ip:*)",
+      "Bash(env:*)",
+      "Bash(rpm:*)",
+      "Bash(zypper:*)",
+      "Bash(SUSEConnect:*)",
+      "Bash(systemctl:*)",
+      "Bash(gcloud:*)",
+      "Bash(python3:*)",
+      "Bash(chmod:*)"
+    ]
+  }
+}
