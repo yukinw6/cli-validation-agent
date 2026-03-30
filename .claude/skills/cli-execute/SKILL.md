@@ -23,7 +23,7 @@ runbook: <output/runbooks/YYYYMMDD_xxx.md のパス>   # 必須
 | profile 値 | プロファイルファイル | 主なユースケース |
 |-----------|-------------------|----------------|
 | （省略） | なし | ローカル・汎用Linux |
-| `sles-gcp` | `profiles/sles-gcp.md` | SLES VM on GCP（SPマイグレーション等） |
+| `sles-gcp` | `.claude/profiles/cli-execute/sles-gcp.md` | SLES VM on GCP（SPマイグレーション等） |
 
 ### connection_mode の指定例
 
@@ -56,7 +56,7 @@ runbook: output/runbooks/20260315_SLES_SP4_to_SP6_upgrade_precheck.md
 
 ### Step 2: Safetyチェック（Reviewer）
 
-**プロファイル読み込み**: `profile` が指定されている場合、対応するプロファイルファイル（`profiles/<profile>.md`）を読み込み、「追加許可コマンド」と「追加禁止コマンド」をこのステップの照合に加える。
+**プロファイル読み込み**: `profile` が指定されている場合、対応するプロファイルファイル（`.claude/profiles/cli-execute/<profile>.md`）を読み込み、「追加許可コマンド」と「追加禁止コマンド」をこのステップの照合に加える。
 
 抽出したコマンドが以下の **cli-execute 実行許可コマンド** に含まれることを確認する。
 
@@ -101,7 +101,7 @@ sudo reboot
 ドメインプロファイルに応じて以下のカテゴリのコマンドを追加許可できる。
 詳細は各プロファイルを参照すること。
 
-**SLES/SUSEドメイン** → [`profiles/sles-gcp.md`](profiles/sles-gcp.md) 参照
+**SLES/SUSEドメイン** → [`.claude/profiles/cli-execute/sles-gcp.md`](.claude/profiles/cli-execute/sles-gcp.md) 参照
 
 **AWS EC2ドメイン**（将来追加予定）:
 ```
