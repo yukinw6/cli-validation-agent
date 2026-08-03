@@ -65,6 +65,17 @@ dd / mkfs / mount / umount
 
 ---
 
+## Runbook 確認ルール
+
+Ansible Playbook / zypper / gcloud など実環境に触れる作業を始める前に
+`output/runbooks/` を確認し、関連する既存 Runbook がないかチェックすること。
+
+既存 Runbook がある場合：
+- バグ修正表の「Playbook 反映」列を確認する
+- ❌ の項目があれば作業開始前に Playbook へ反映してから進む
+
+---
+
 ## エラー処理
 
 - エラーはスキップして記録（同一コマンドは3回以上リトライしない）
@@ -79,4 +90,39 @@ dd / mkfs / mount / umount
 | Runbook | `output/runbooks/YYYYMMDD_<goal>.md` |
 | Script | `output/scripts/YYYYMMDD_<goal>.sh` |
 | Log | `logs/YYYYMMDD_<goal>.log` |
+| 構造化 JSON | `output/json/YYYYMMDD_<goal>.json` （対応タスクのみ） |
+
+---
+
+## 構造化 JSON 出力
+
+以下のタスクでは Runbook に加えて構造化 JSON を `output/json/` に出力すること。
+
+### Cloud Run 環境変数 → Secret Manager 移行調査
+
+ファイル名: `output/json/YYYYMMDD_secret_migration_<service>.json`
+
+```json
+{
+  "schema_version": "1",
+  "goal": "cloud-run-secret-migration",
+  "generated_at": "YYYY-MM-DDTHH:MM:SS+09:00",
+  "project": "PROJECT_ID",
+  "region": "REGION",
+  "service_name": "SERVICE_NAME",
+  "service_url": "https://...",
+  "sa_email": "SA@PROJECT.iam.gserviceaccount.com",
+  "plain_env_vars": [
+    {"name": "ENV_VAR_NAME", "value": "CURRENT_VALUE"}
+  ],
+  "secret_manager_api_enabled": true,
+  "existing_secrets": ["secret-name-1"]
+}
+```
+
+**ルール:**
+- `plain_env_vars` には `value` が平文のもののみ含める（`valueFrom` の Secret 参照は除外）
+- `existing_secrets` は `gcloud secrets list` の実行結果から生成すること（推測禁止）
+- `secret_manager_api_enabled` は `gcloud services list` の実行結果から判定すること
+- フィールドの追加は自由だが、上記フィールドはすべて必須
 
