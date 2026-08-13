@@ -18,7 +18,6 @@
       "Bash(zypper:*)",
       "Bash(SUSEConnect:*)",
       "Bash(systemctl:*)",
-      "Bash(gcloud:*)",
       "Bash(python3:*)",
       "Bash(chmod:*)"
     ]
